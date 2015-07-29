@@ -17,20 +17,19 @@ exports.load = function(req, res, next, quizId) {
 
 // GET /quizes
 exports.index = function(req, res) {
-  if (req.query.search == null) {
-    models.Quiz.findAll().then(
-      function(quizes) {
-	res.render('quizes/index', { quizes: quizes, errors: [] });
-      }
-    ).catch(function(error) { next(error); });
-  } else {
-    var search = "%" + req.query.search.replace(" ", "%") + "%";    
-    models.Quiz.findAll({where: ["pregunta like ?", search]}).then(
-      function(quizes) {
-	res.render('quizes/index', { quizes: quizes, errors: [] });
-      }
-    ).catch(function(error) { next(error); });
+  var search = "%";
+  var tema = "%";
+  if (req.query.search) {
+    search = "%" + req.query.search.replace(/\s/g, "%") + "%";
   }
+  if (req.query.tema) {
+    tema = "%" + req.query.tema.replace(/\s/g, "%") + "%";
+  }
+  models.Quiz.findAll({where: ["tema like ? and pregunta like ?", tema, search]}).then(
+    function(quizes) {
+      res.render('quizes/index', { quizes: quizes, errors: [] });
+    }
+  ).catch(function(error) { next(error); });
 };
 
 // GET /quizes/:id
@@ -63,8 +62,8 @@ exports.create = function(req, res) {
       res.render('quizes/new', { quiz: quiz, errors: err.errors });
     }
     else {
-      // guarda en BD los campos pregunta y respuesta de quiz
-      quiz.save({fields: ["pregunta", "respuesta"]}).then(function() {
+      // guarda en BD los campos trma, pregunta y respuesta de quiz
+      quiz.save({fields: ["tema", "pregunta", "respuesta"]}).then(function() {
 	res.redirect('/quizes');
       }); // Redirección HTTP (URL relativo) lista de preguntas
     }
@@ -79,15 +78,17 @@ exports.edit = function(req, res) {
 
 // PUT /quizes/:id
 exports.update = function(req, res) {
+  req.quiz.tema = req.body.quiz.tema;
   req.quiz.pregunta = req.body.quiz.pregunta;
   req.quiz.respuesta = req.body.quiz.respuesta;
+  
   req.quiz.validate().then(function(err) {
     if (err) {
       res.render('quizes/edit', { quiz: req.quiz, errors: err.errors });
     }
     else {
-      // save: guarda en BD los campos pregunta y respuesta de quiz
-      req.quiz.save({fields: ["pregunta", "respuesta"]}).then(function() {
+      // save: guarda en BD los campos tema, pregunta y respuesta de quiz
+      req.quiz.save({fields: ["tema", "pregunta", "respuesta"]}).then(function() {
 	res.redirect('/quizes');
       }); // Redirección HTTP (URL relativo) lista de preguntas
     }
