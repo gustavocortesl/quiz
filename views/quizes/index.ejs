@@ -23,8 +23,19 @@
 <div class="scrollable">
 <table>
 <% var i; for ( i = 0; i < quizes.length; i++ ) { %>
+  <% var temaux = "Otro";
+     if (quizes[i].tema == "humanidades") {
+       temaux= "Humanidades";
+     } else if (quizes[i].tema == "ocio") {
+       temaux= "Ocio";
+     } else if (quizes[i].tema == "ciencia") {
+       temaux= "Ciencia";
+     } else if (quizes[i].tema == "tecnologia") {
+       temaux= "Tecnología";
+     }
+  %>
   <tr>
-    <td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].tema %></a></td>
+    <td><%= temaux %></td>
     <td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a></td>
     <td><a href="quizes/<%= quizes[i].id %>/edit"><button type="button">Editar</button></a></td>
     <td>
