@@ -1,6 +1,4 @@
-<table>
-<tr>
-<td>
+<span style="float: left">
 <form method="get" action="/quizes">
   Tema:
   <select name="tema">
@@ -15,12 +13,11 @@
   <input type="text" name="search" value="" />
   <input type="submit" value="Buscar" />
 </form>
-</td>
-<td>________________________________</td>
-<td><a href="/quizes/new"><button type="button">Crear pregunta</button></a></td>
-</tr>
-</table>
-<div class="scrollable">
+</span>
+<span class="right">
+  <a href="/quizes/new"><button type="button">Crear pregunta</button></a>
+</span>
+<div class="scrollable" style="clear: both">
 <table>
 <% var i; for ( i = 0; i < quizes.length; i++ ) { %>
   <% var temaux = "Otro";

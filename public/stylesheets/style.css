@@ -10,6 +10,7 @@ header, nav, section	{ background: #eee; text-align: center; }
 footer			{ background: #eee; text-align: center; }
 nav span		{ margin: 0px 10px 0px 0px; }
 
-.scrollable		{ overflow-y: scroll; height: 160px }
+.scrollable		{ overflow-y: scroll; height: 160px; }
+.right			{ float: right; }
 
-#ErrorMsgs		{ color: #f61; font-size: smaller }
+#ErrorMsgs		{ color: #f61; font-size: smaller; }
