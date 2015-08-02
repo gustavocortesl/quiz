@@ -1,4 +1,4 @@
-<span style="float: left">
+<span class="left">
 <form method="get" action="/quizes">
   Tema:
   <select name="tema">
@@ -14,10 +14,12 @@
   <input type="submit" value="Buscar" />
 </form>
 </span>
-<span class="right">
-  <a href="/quizes/new"><button type="button">Crear pregunta</button></a>
-</span>
-<div class="scrollable" style="clear: both">
+<% if (session.user) { %>
+  <span class="right">
+    <a href="/quizes/new"><button type="button">Crear pregunta</button></a>
+  </span>
+<% } %>
+<div class="scrollable nofloat">
 <table>
 <% var i; for ( i = 0; i < quizes.length; i++ ) { %>
   <% var temaux = "Otro";
@@ -34,14 +36,16 @@
   <tr>
     <td><%= temaux %></td>
     <td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a></td>
-    <td><a href="quizes/<%= quizes[i].id %>/edit"><button type="button">Editar</button></a></td>
-    <td>
-      <form method="post" action="quizes/<%= quizes[i].id %>?_method=delete">
-	<button type="submit" onClick="return confirm('Borrar: <%= quizes[i].pregunta %>');">
-	  Borrar
-	</button>
-      </form>
-    </td>
+    <% if (session.user) { %>
+      <td><a href="quizes/<%= quizes[i].id %>/edit"><button type="button">Editar</button></a></td>
+      <td>
+	<form method="post" action="quizes/<%= quizes[i].id %>?_method=delete">
+	  <button type="submit" onClick="return confirm('Borrar: <%= quizes[i].pregunta %>');">
+	    Borrar
+	  </button>
+	</form>
+      </td>
+    <% } %>
   </tr>
 <% } %>
 </table>
