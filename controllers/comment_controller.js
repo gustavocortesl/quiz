@@ -8,7 +8,6 @@ exports.load = function(req, res, next, commentId) {
     }
   }).then(function(comment) {
     if (comment) {
-      console.log("llega " + comment.toString());
       req.comment = comment;
       next();
     }
@@ -33,7 +32,8 @@ exports.create = function(req, res) {
   
   comment.validate().then(function(err) {
     if (err) {
-      res.render('comments/new', { comment: comment, errors: err.errors });
+      console.log('error de validacion'+JSON.stringify(err));
+      res.render('comments/new', { comment: comment, quizId: req.params.quizId, errors: err.errors });
     }
     else {
       // guarda en BD el campo texto de comment
@@ -47,7 +47,6 @@ exports.create = function(req, res) {
  
 // GET (PUT) /quizes/:quizId/comments/:commentId/publish
 exports.publish = function (req, res) {
-  console.log("copón");
   req.comment.publicado = true;
   req.comment.save({ fields: ["publicado"] })
     .then(function() { res.redirect('/quizes/'+req.params.quizId); })

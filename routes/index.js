@@ -21,19 +21,19 @@ router.post('/login', sessionController.create);
 router.get('/logout', sessionController.destroy);
 
 // Definición de rutas de quizes
-router.get('/quizes',                      quizController.index);
+router.get('/quizes',                      sessionController.sessionTimeout, quizController.index);
 router.get('/quizes/:quizId(\\d+)',        quizController.show);
 router.get('/quizes/:quizId(\\d+)/answer', quizController.answer);
-router.get('/quizes/new',                  sessionController.loginRequired, quizController.new);
-router.post('/quizes/create',              sessionController.loginRequired, quizController.create);
-router.get('/quizes/:quizId(\\d+)/edit',   sessionController.loginRequired, quizController.edit);
-router.put('/quizes/:quizId(\\d+)',        sessionController.loginRequired, quizController.update);
-router.delete('/quizes/:quizId(\\d+)',     sessionController.loginRequired, quizController.destroy);
+router.get('/quizes/new',                  sessionController.sessionTimeout, sessionController.loginRequired, quizController.new);
+router.post('/quizes/create',              sessionController.sessionTimeout, sessionController.loginRequired, quizController.create);
+router.get('/quizes/:quizId(\\d+)/edit',   sessionController.sessionTimeout, sessionController.loginRequired, quizController.edit);
+router.put('/quizes/:quizId(\\d+)',        sessionController.sessionTimeout, sessionController.loginRequired, quizController.update);
+router.delete('/quizes/:quizId(\\d+)',     sessionController.sessionTimeout, sessionController.loginRequired, quizController.destroy);
 
 // Definición de rutas de comments
 router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);
 router.post('/quizes/:quizId(\\d+)/comments',    commentController.create);
-router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish', sessionController.loginRequired, commentController.publish);
+router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish', sessionController.sessionTimeout, sessionController.loginRequired, commentController.publish);
 //router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish', commentController.publish);
 
 // Otras rutas

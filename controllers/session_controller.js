@@ -8,6 +8,28 @@ exports.loginRequired = function (req, res, next) {
   }
 };
 
+// MW de comprobación de timeout de sesión
+exports.sessionTimeout = function (req, res, next) {
+  var TIMEOUT = 2 * 60 * 1000;
+  if (req.session.user) {
+    var ahora = new Date();
+    var ultimaTransacción = new Date(req.session.user.time);
+    var tiempoTranscurrido = ahora.getTime() - ultimaTransacción.getTime();
+    console.log('tiempo transcurrido ' + tiempoTranscurrido);
+    if ( tiempoTranscurrido > TIMEOUT ) {
+      console.log('LOGOUT');
+      res.redirect('/logout');
+    }
+    else{
+      next();
+    }
+  }
+  else{
+    //res.redirect('/login');
+    next();
+  }
+};
+
 // GET /login    - Formulario de login
 exports.new = function(req, res) {
   var errors = req.session.errors || {};
@@ -31,11 +53,13 @@ exports.create = function(req, res) {
   
     // Crear req.session.user y guardar campos id y username
     // La sesión se define por la existencia de: req.session.user
-    req.session.user = { id: user.id, username: user.username };
+    req.session.user = { id: user.id, username: user.username, time: new Date() };
     // redirección a path anterior a login
     res.redirect(req.session.redir.toString());
   }); 
 };
+
+
 
 // DELETE (GET) /logout   - Destruir sesión
 exports.destroy = function (req, res) {

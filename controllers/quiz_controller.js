@@ -64,7 +64,7 @@ exports.create = function(req, res) {
       res.render('quizes/new', { quiz: quiz, errors: err.errors });
     }
     else {
-      // guarda en BD los campos trma, pregunta y respuesta de quiz
+      // guarda en BD los campos tema, pregunta y respuesta de quiz
       quiz.save({fields: ["tema", "pregunta", "respuesta"]}).then(function() {
 	res.redirect('/quizes');
       }); // Redirección HTTP (URL relativo) lista de preguntas
