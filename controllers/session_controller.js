@@ -21,6 +21,7 @@ exports.sessionTimeout = function (req, res, next) {
       res.redirect('/logout');
     }
     else{
+      req.session.user.time = ahora;
       next();
     }
   }
@@ -58,8 +59,6 @@ exports.create = function(req, res) {
     res.redirect(req.session.redir.toString());
   }); 
 };
-
-
 
 // DELETE (GET) /logout   - Destruir sesión
 exports.destroy = function (req, res) {
