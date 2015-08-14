@@ -11,16 +11,17 @@ var stats = {
 var Sequelize = require('sequelize');
 
 // GET /quizes/statistics
-exports.statistics = function(req, res) {
+exports.statistics = function(req, res, next) {
   // obtenemos estadísticas en modo asíncrono
   async.parallel([
+
     function(callback) { //número de quizes
   	models.Quiz.count().then(
   	  function(total) {
   	    stats.totalQuizes = total;
   	    console.log('quizes '+stats.totalQuizes+' '+total);
   	  }
-        ).catch(function(error) { next(error); });
+        ).catch(function(error) { callback(error); });
         callback();        
     },
     function(callback) { //número de comentarios
@@ -29,7 +30,7 @@ exports.statistics = function(req, res) {
   	    stats.totalComments = total;
   	    console.log('comments '+stats.totalComments+' '+total);
   	  }
-        ).catch(function(error) { next(error); });
+        ).catch(function(error) { callback(error); });
         callback();        
     },
     function(callback) { //número de preguntas con comentarios
@@ -43,13 +44,16 @@ exports.statistics = function(req, res) {
 		console.log(JSON.stringify(total));
 		
   	    stats.quizesConComments = total.length;
-  	    console.log('quizesConComments '+stats.quizesConComments+' '+total);
+  	    console.log('quizesConComments '+stats.quizesConComments);
   	  }
-        ).catch(function(error) { next(error); });
+        ).catch(function(error) { callback(error); });
         callback();        
     }
   ],
-  function(err) {
+  function(error) {
+		if (error) {
+			next(error);
+		}
     // Cálculo de estadísticas restantes
     stats.mediaComments = (stats.totalComments / stats.totalQuizes).toFixed(2);
     stats.quizesSinComments = stats.totalQuizes - stats.quizesConComments;
