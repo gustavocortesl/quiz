@@ -20,7 +20,21 @@ exports.statistics = function(req, res, next) {
 		stats.totalComments = total;
 		console.log('comments '+stats.totalComments+' '+total);
   }).then(
-  models.Quiz.findAll({
+    models.Quiz.findAll({
+      include: [{
+	model: models.Comment//,
+	//where: { QuizId: Sequelize.col('quiz.id') }
+      }]
+    }).then(function(quizes) {
+	//console.log(JSON.stringify(quizes));
+	var count = 0;
+	quizes.forEach(function (q) {
+	  console.log('> ', q.pregunta, q.Comments.length);
+	  if (q.Comments.length) count++;  
+	})
+	stats.quizesConComments = count;
+  	console.log('quizesConComments '+stats.quizesConComments);
+    /*models.Quiz.findAll({
     include: [{
       model: models.Comment,
       where: { QuizId: Sequelize.col('quiz.id') }
@@ -28,7 +42,7 @@ exports.statistics = function(req, res, next) {
   }).then(function(total) {
 	console.log(JSON.stringify(total));
 	stats.quizesConComments = total.length;
-  	console.log('quizesConComments '+stats.quizesConComments);
+  	console.log('quizesConComments '+stats.quizesConComments);*/
   }).then(
     function(error) {
       // Cálculo de estadísticas restantes
