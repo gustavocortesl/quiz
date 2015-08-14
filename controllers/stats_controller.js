@@ -21,7 +21,7 @@ exports.statistics = function(req, res, next) {
   	    stats.totalQuizes = total;
   	    console.log('quizes '+stats.totalQuizes+' '+total);
   	  }
-        ).catch(function(error) { callback(error); });
+        ).catch(function(error) { callback(error); return; });
         callback();        
     },
     function(callback) { //número de comentarios
@@ -30,7 +30,7 @@ exports.statistics = function(req, res, next) {
   	    stats.totalComments = total;
   	    console.log('comments '+stats.totalComments+' '+total);
   	  }
-        ).catch(function(error) { callback(error); });
+        ).catch(function(error) { callback(error); return; });
         callback();        
     },
     function(callback) { //número de preguntas con comentarios
@@ -46,14 +46,11 @@ exports.statistics = function(req, res, next) {
   	    stats.quizesConComments = total.length;
   	    console.log('quizesConComments '+stats.quizesConComments);
   	  }
-        ).catch(function(error) { callback(error); });
+        ).catch(function(error) { callback(error); return ;});
         callback();        
     }
   ],
   function(error) {
-		if (error) {
-			next(error);
-		}
     // Cálculo de estadísticas restantes
     stats.mediaComments = (stats.totalComments / stats.totalQuizes).toFixed(2);
     stats.quizesSinComments = stats.totalQuizes - stats.quizesConComments;

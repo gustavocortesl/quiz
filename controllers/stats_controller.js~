@@ -44,7 +44,7 @@ exports.statistics = function(req, res, next) {
 		console.log(JSON.stringify(total));
 		
   	    stats.quizesConComments = total.length;
-  	    console.log('quizesConComments '+stats.quizesConComments+' '+total);
+  	    console.log('quizesConComments '+stats.quizesConComments);
   	  }
         ).catch(function(error) { callback(error); });
         callback();        
