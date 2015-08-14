@@ -1,0 +1,15 @@
+<p>
+Número total de preguntas: <%= stats.totalQuizes %> 
+</p>
+<p>
+Número total de comentarios: <%= stats.totalComments %> 
+</p>
+<p>
+Número medio de comentarios por pregunta: <%= stats.mediaComments %> 
+</p>
+<p>
+Número de preguntas sin comentarios: <%= stats.totalQuizesSinComments %> 
+</p>
+<p>
+Número de preguntas con comentarios: <%= stats.totalQuizesConComments %> 
+</p>
