@@ -9,6 +9,7 @@ var stats = {
 };
 // Cargar modelo ORM
 var Sequelize = require('sequelize');
+
 // GET /quizes/statistics
 exports.statistics = function(req, res) {
   // obtenemos estadísticas en modo asíncrono
